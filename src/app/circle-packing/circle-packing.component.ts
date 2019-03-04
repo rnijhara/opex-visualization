@@ -2,15 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'circle-packing',
+  selector: 'app-circle-packing',
   templateUrl: './circle-packing.component.html',
   styleUrls: ['./circle-packing.component.css']
 })
 export class CirclePackingComponent implements OnInit {
   public color: any;
   public root: any;
-  @Input()
-  private data: any;
+  private renderData: any;
   @Input()
   private width: number;
   @Input()
@@ -25,21 +24,52 @@ export class CirclePackingComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit() {
-    this.format = d3.format(',d');
-    this.color = d3.scaleLinear()
-      .domain([0, 5])
-      .range(['hsl(152,80%,80%)', 'hsl(228,30%,40%)'])
-      .interpolate(d3.interpolateHcl);
+  get data() {
+    return this.renderData;
+  }
+
+  @Input()
+  set data(value) {
+    if (!value) {
+      return;
+    }
+    if (!this.format) {
+      this.initFormat();
+    }
+    if (!this.color) {
+      this.initColor();
+    }
+    this.renderData = value;
+    this.clearSvg();
     this.initChart();
+  }
+
+  ngOnInit() {
+    this.initFormat();
+    this.initColor();
   }
 
   public viewBox() {
     return [-this.width / 2, -this.height / 2, this.width, this.height];
   }
 
+  private clearSvg() {
+    d3.selectAll('svg > *').remove();
+  }
+
+  private initColor() {
+    this.color = d3.scaleLinear()
+      .domain([0, 5])
+      .range(['hsl(152,80%,80%)', 'hsl(228,30%,40%)'])
+      .interpolate(d3.interpolateHcl);
+  }
+
+  private initFormat() {
+    this.format = d3.format(',d');
+  }
+
   private initChart() {
-    this.root = this.pack(this.data);
+    this.root = this.pack(this.renderData);
     this.focus = this.root;
     this.initSvg();
     this.initNode();
