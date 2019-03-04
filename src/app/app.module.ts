@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CirclePackingComponent } from './circle-packing/circle-packing.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CirclePackingComponent
   ],
   imports: [
     BrowserModule,

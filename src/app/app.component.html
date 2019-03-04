@@ -1,8 +1,1 @@
-<svg
-  width="900"
-  height="500"
-  class="container"
-  [attr.viewBox]="viewBox()"
-  [ngStyle]="{'background': color(0)}"
->
-</svg>
+<circle-packing *ngIf="data" [data]="data" [height]="height" [width]="width"></circle-packing>
